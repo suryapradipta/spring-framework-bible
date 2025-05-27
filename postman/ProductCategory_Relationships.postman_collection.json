@@ -1,0 +1,131 @@
+{
+  "info": {
+    "name": "Product-Category Relationships API",
+    "description": "Endpoints for managing relationships between products and categories in the Spring Framework Bible project",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Add Category to Product",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productId}}/categories/{{categoryId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productId}}", "categories", "{{categoryId}}"]
+        },
+        "description": "Associates a category with a product."
+      },
+      "response": [
+        {
+          "name": "Successful Response",
+          "originalRequest": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/products/1/categories/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "1", "categories", "1"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"timestamp\": \"2023-07-28T12:00:00.000Z\",\n  \"status\": \"OK\",\n  \"statusCode\": 200,\n  \"message\": \"Category added to product successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Example Product\",\n    \"description\": \"This is an example product\",\n    \"price\": 19.99,\n    \"sku\": \"PROD-001\",\n    \"createdAt\": \"2023-07-28T12:00:00.000Z\",\n    \"updatedAt\": \"2023-07-28T12:00:00.000Z\",\n    \"categories\": [\n      {\n        \"id\": 1,\n        \"name\": \"Electronics\",\n        \"description\": \"Electronic devices and accessories\",\n        \"createdAt\": \"2023-07-28T12:00:00.000Z\",\n        \"updatedAt\": \"2023-07-28T12:00:00.000Z\"\n      }\n    ]\n  }\n}"
+        },
+        {
+          "name": "Product Not Found Response",
+          "originalRequest": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/products/999/categories/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "999", "categories", "1"]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"timestamp\": \"2023-07-28T12:00:00.000Z\",\n  \"status\": \"NOT_FOUND\",\n  \"statusCode\": 404,\n  \"message\": \"Product not found with id: '999'\"\n}"
+        },
+        {
+          "name": "Category Not Found Response",
+          "originalRequest": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/products/1/categories/999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "1", "categories", "999"]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"timestamp\": \"2023-07-28T12:00:00.000Z\",\n  \"status\": \"NOT_FOUND\",\n  \"statusCode\": 404,\n  \"message\": \"Category not found with id: '999'\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Remove Category from Product",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/products/{{productId}}/categories/{{categoryId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "products", "{{productId}}", "categories", "{{categoryId}}"]
+        },
+        "description": "Removes a category association from a product."
+      },
+      "response": [
+        {
+          "name": "Successful Response",
+          "originalRequest": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/products/1/categories/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "1", "categories", "1"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"timestamp\": \"2023-07-28T12:00:00.000Z\",\n  \"status\": \"OK\",\n  \"statusCode\": 200,\n  \"message\": \"Category removed from product successfully\",\n  \"data\": {\n    \"id\": 1,\n    \"name\": \"Example Product\",\n    \"description\": \"This is an example product\",\n    \"price\": 19.99,\n    \"sku\": \"PROD-001\",\n    \"createdAt\": \"2023-07-28T12:00:00.000Z\",\n    \"updatedAt\": \"2023-07-28T12:00:00.000Z\",\n    \"categories\": []\n  }\n}"
+        }
+      ]
+    }
+  ]
+} 

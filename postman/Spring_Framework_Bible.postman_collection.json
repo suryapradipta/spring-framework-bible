@@ -1,0 +1,31 @@
+{
+  "info": {
+    "name": "Spring Framework Bible",
+    "description": "A comprehensive API collection for testing and documenting the Spring Framework Bible project. This collection covers all REST endpoints and demonstrates proper usage patterns.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Products",
+      "description": "Endpoints for managing products",
+      "item": []
+    },
+    {
+      "name": "Categories",
+      "description": "Endpoints for managing categories",
+      "item": []
+    },
+    {
+      "name": "Product-Category Relationships",
+      "description": "Endpoints for managing relationships between products and categories",
+      "item": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+} 
