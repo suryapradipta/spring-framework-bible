@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("spring_bible.products")
+@Table("products")
 public class Product {
     
     @Id

@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("spring_bible.categories")
+@Table("categories")
 public class Category {
     
     @Id

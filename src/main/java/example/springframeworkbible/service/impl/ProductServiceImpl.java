@@ -9,6 +9,7 @@ import example.springframeworkbible.mapper.ProductMapper;
 import example.springframeworkbible.repository.CategoryRepository;
 import example.springframeworkbible.repository.ProductRepository;
 import example.springframeworkbible.service.ProductService;
+import example.springframeworkbible.util.SchemaUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
     private final CategoryMapper categoryMapper;
     private final DatabaseClient databaseClient;
+    private final SchemaUtils schemaUtils;
     
     @Override
     public Flux<ProductDto> findAll() {
@@ -85,14 +87,16 @@ public class ProductServiceImpl implements ProductService {
     public Mono<Void> delete(Long id) {
         return productRepository.findById(id)
                 .switchIfEmpty(Mono.error(ResourceNotFoundException.create("Product", "id", id)))
-                .flatMap(product -> 
-                    // Delete all product-category relationships
-                    databaseClient.sql("DELETE FROM product_categories WHERE product_id = :productId")
+                .flatMap(product -> {
+                    // Delete related product_categories first
+                    return schemaUtils.executeInSchema(
+                            schemaUtils.getDefaultSchema(),
+                            "DELETE FROM product_categories WHERE product_id = :productId")
                             .bind("productId", id)
                             .fetch()
                             .rowsUpdated()
-                            .then(productRepository.delete(product))
-                );
+                            .then(productRepository.delete(product));
+                });
     }
     
     @Override
@@ -109,7 +113,9 @@ public class ProductServiceImpl implements ProductService {
         // Then, add the relationship
         return Mono.zip(productMono, categoryExistsMono)
                 .flatMap(tuple -> 
-                    databaseClient.sql("INSERT INTO product_categories (product_id, category_id) VALUES (:productId, :categoryId) ON CONFLICT DO NOTHING")
+                    schemaUtils.executeInSchema(
+                            schemaUtils.getDefaultSchema(),
+                            "INSERT INTO product_categories (product_id, category_id) VALUES (:productId, :categoryId) ON CONFLICT DO NOTHING")
                             .bind("productId", productId)
                             .bind("categoryId", categoryId)
                             .fetch()
@@ -134,7 +140,9 @@ public class ProductServiceImpl implements ProductService {
         // Then, remove the relationship
         return Mono.zip(productMono, categoryExistsMono)
                 .flatMap(tuple -> 
-                    databaseClient.sql("DELETE FROM product_categories WHERE product_id = :productId AND category_id = :categoryId")
+                    schemaUtils.executeInSchema(
+                            schemaUtils.getDefaultSchema(),
+                            "DELETE FROM product_categories WHERE product_id = :productId AND category_id = :categoryId")
                             .bind("productId", productId)
                             .bind("categoryId", categoryId)
                             .fetch()
